@@ -1,0 +1,110 @@
+<html>
+
+<head>
+    <title>Canvas Tutorial</title>
+    <style>
+        canvas {
+            border: 1px solid black;
+        }
+    </style>
+</head>
+
+<body>
+    <canvas id="tutorial" width="500" height="500" style="margin:0 auto;"></canvas>
+    <form>
+        Canvas Width:<input type="range" id="canvasWidth" min="0" max="1000" step="1" value="500"/>
+        <br>
+        Canvas Height:<input type="range" id="canvasHeight" min="0" max="1000" step="1" value="500"/>
+    </form>
+    <script>
+        var cvs = document.getElementById('tutorial');
+        var context = cvs.getContext('2d');
+
+        function setAngleInfor(ball) {
+            ball.radians = ball.angle * Math.PI / 180;
+            ball.xunits = Math.cos(ball.radians) * ball.speed;
+            ball.yunits = Math.sin(ball.radians) * ball.speed;
+        }
+        window.addEventListener('load', function () {
+            function gameLoop() {
+                window.setTimeout(gameLoop, 20);
+                drawScreen();
+            }
+           
+            function drawScreen() {
+                context.fillStyle = '#EEEEEE';
+                context.fillRect(0, 0, cvs.width, cvs.height);
+                context.strokeStyle = "#000000";
+                context.strokeRect(1, 1, cvs.width - 2, cvs.height - 2);
+                context.fillStyle = "#000000";
+                balls.forEach(function (ball) {
+                    ball.x += ball.xunits;
+                    ball.y += ball.yunits;
+                    context.beginPath();
+                    context.arc(ball.x,ball.y,ball.radius,0,Math.PI*2,true);
+                    context.closePath();
+                    context.fill();
+                    if (ball.x > cvs.width || ball.x < 0) {
+                        ball.angle = 180 - ball.angle;
+                        ball.x -= ball.xunits;
+                        ball.y -= ball.yunits;
+                        setAngleInfor(ball);
+                    }
+                    if (ball.y < 0 || ball.y > cvs.height) {
+                        ball.angle = 360 - ball.angle;
+                        ball.x -= ball.xunits;
+                        ball.y -= ball.yunits;
+                        setAngleInfor(ball);
+                    }
+                });
+            }
+            var numBalls = 100;
+                var maxSize = 8;
+                var minSize = 5;
+                var maxSpeed = maxSize+5;
+                var balls = new Array();
+                var tempBall;
+                var tempX;
+                var tempY;
+                var tempSpeed;
+                var tempAngle;
+                var tempRadius;
+                var tempRadians;
+                var tempXunits;
+                var tempYunits;
+                for(var i=0;i<numBalls;i++){
+                    tempRadius = Math.floor(Math.random()*maxSize)+minSize;
+                    tempX = tempRadius*2+(Math.floor(Math.random()*cvs.width)-tempRadius*2);
+                    tempY = tempRadius*2 +(Math.floor(Math.random()*cvs.height)-tempRadius*2);
+                    tempSpeed = maxSpeed-tempRadius;
+                    tempAngle = Math.floor(Math.random()*360);
+                    tempRadians = tempAngle*Math.PI/180;
+                    tempXunits = Math.cos(tempRadians)*tempSpeed;
+                    tempYunits = Math.sin(tempRadians)*tempSpeed;
+                    tempBall = {
+                         x:tempX,
+                         y:tempY,
+                         radius:tempRadius,
+                         speed:tempSpeed,
+                         angle:tempAngle,
+                         xunits:tempXunits,
+                         yunits:tempYunits
+                    };
+                    balls.push(tempBall);
+                }
+                gameLoop();
+                document.getElementById("canvasWidth").addEventListener('change',function(e){
+                    var target = e.target;
+                    cvs.width = target.value;
+                    drawScreen();
+                },false)
+                document.getElementById('canvasHeight').addEventListener('change',function(e){
+                    var target = e.target;
+                    cvs.height = target.value;
+                    drawScreen();
+                },false);
+        }, false);
+    </script>
+</body>
+
+</html>

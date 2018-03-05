@@ -1,0 +1,87 @@
+<html>
+
+<head>
+    <title>Canvas Tutorial</title>
+    <style>
+        .container {
+            display: block;
+            width: 200px;
+            height: 200px;
+            margin-bottom: 50px;
+            border: 1px solid #bbb;
+        }
+
+        .box {
+            width: 100%;
+            height: 100%;
+            opacity: .75;
+        }
+
+        #darkred .box {
+            background-color: darkred;
+            transform: perspective(600px) rotateY(45deg);
+        }
+
+        #darkblue {
+            perspective: 600px;
+        }
+
+        #darkblue .box {
+            background-color: darkblue;
+            transform: rotateY(45deg);
+        }
+        .container{
+            width: 128px;
+            height: 100px;
+            margin-left: -64px;
+            -webkit-transition: -webkit-transform 1s;
+            -moz-transition: -moz-transform 1s;
+            transition: transform 1s;
+            -webkit-transform-style: preserve-3d;
+            -moz-transform-style: preserve-3d;
+            transform-style: preserve-3d;
+            position: absolute;
+            left: 50%;
+        }
+        .piece{
+            width: 128px;
+            box-shadow: 0 1px 3px rgba(0,0,0,.5);
+            -webkit-transition: opacity 1s, -webkit-transform 1s;
+            -moz-transition: opacity 1s, -moz-transform 1s;
+            transition: opacity 1s, transform 1s;
+            position: absolute;
+            bottom: 0;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="container" class="container">
+        <img id="piece1" src="http://image.zhangxinxu.com/image/study/s/s128/mm1.jpg" class="piece" >
+        <img id="piece8" src="http://image.zhangxinxu.com/image/study/s/s128/mm8.jpg" class="piece" >
+        <img id="piece3" src="http://image.zhangxinxu.com/image/study/s/s128/mm3.jpg" class="piece" >
+        <img id="piece4" src="http://image.zhangxinxu.com/image/study/s/s128/mm4.jpg" class="piece" >
+        <img id="piece6" src="http://image.zhangxinxu.com/image/study/s/s128/mm6.jpg" class="piece" >
+        <img id="piece7" src="http://image.zhangxinxu.com/image/study/s/s128/mm7.jpg" class="piece">
+        <img id="piece10" src="http://image.zhangxinxu.com/image/study/s/s128/mm10.jpg" class="piece" >
+        <img id="piece13" src="http://image.zhangxinxu.com/image/study/s/s128/mm13.jpg" class="piece">
+        <img id="piece15" src="http://image.zhangxinxu.com/image/study/s/s128/mm15.jpg" class="piece"s>
+    </div>
+    <script>
+          var pieceNodes = document.getElementsByClassName('piece');
+             var step = 40;
+             var curStep = 0;
+             [].forEach.call(pieceNodes,function(itemNode){
+                itemNode.style.transform= 'rotateY('+curStep+'deg) '+'translateZ(176px)';
+                curStep=curStep+40;
+             })
+            var container =  document.getElementById('container');
+            var count = 0;
+            container.onclick = function(){
+                count++;
+                this.style.transform = 'rotateY('+count*20+'deg)';
+            }
+    </script>
+</body>
+
+</html>

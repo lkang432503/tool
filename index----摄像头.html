@@ -1,0 +1,178 @@
+<html>
+    
+    <head>
+        <title>Canvas Tutorial</title>
+        <style>
+            canvas {
+                border: 1px solid black;
+            }
+        </style>
+    </head>
+    
+    <body onload="load()">
+        <canvas id="tutorial" width="500" height="500" style="position:absolute;top:50px;left:50px;"></canvas>
+        <script>
+            function supportedVideoFormat(video){
+                var retrunExtension = '';
+                if(video.canPlayType("video/mp4") == 'probably' ||video.canPlayType("video/mp4") == 'maybe' ){
+                    return "mp4";
+                }else if(video.canPlayType("video/webm") == 'probably' ||video.canPlayType("video/webm") == 'maybe'){
+                    return "webm";
+                }else if(video.canPlayType("video/ogg") == 'probably' ||video.canPlayType("video/ogg") == 'maybe'){
+                    return "ogg";
+                }
+                return retrunExtension;
+            }
+            function userMediaSupported(){
+                return !!(navigator.getUserMedia||navigator.webkitGetUserMedia||navigator.mozGetUserMedia||navigator.msGetUserMedia);
+            }
+        
+          function load(){
+                var cvs = document.getElementById('tutorial');
+                var ctx = cvs.getContext('2d');
+                var videoElement= document.createElement('video');
+                var videoDiv= document.createElement('div');
+                document.body.appendChild(videoDiv);
+                videoDiv.appendChild(videoElement);
+                videoDiv.setAttribute('style','display:none;');
+                var videoType = supportedVideoFormat(videoElement);
+                // videoElement.addEventListener('canplaythrough',videoLoaded,false);
+                // videoElement.setAttribute("src",'video.ogv');
+                var rows = 4;
+                var cols = 4;
+                var xPad = 10;
+                var yPad = 10;
+                var startXOffset = 10;
+                var startYOffset = 10;
+                var partWidth = videoElement.width/cols;
+                var partHeight = videoElement.height/rows;
+                var partWidth = 80;
+                var partHeight = 60;
+                var board = new Array();
+                for(var i = 0;i<cols;i++){
+                    board[i] = new Array();
+                    for(var j=0;j<rows;j++){
+                        board[i][j] = {finalCol:i,finalRow:j,selected:false}
+                    }
+                }
+                board = randomizeBoard(board);
+                cvs.addEventListener('mouseup',eventMouseUp,false);
+                function gameLoop(){
+                    window.setTimeout(gameLoop,20);
+                    drawScreen();
+                }
+                if(userMediaSupported()){
+                    startVideo();
+                    gameLoop();
+                }
+                
+                function startVideo(){
+                    navigator.getUserMedia  = navigator.getUserMedia||navigator.webkitGetUserMedia||navigator.mozGetUserMedia||navigator.msGetUserMedia;
+                    navigator.getUserMedia({video:true,audio:true},function(userMedia){
+                        window.URL = window.URL||window.webkitURL||window.mozURL||window.msURL;
+                        videoElement.src= window.URL.createObjectURL(userMedia);
+                        videoElement.onloadedmetadata = function(){
+                            alert('Do cool Stuff');
+                            videoElement.play();
+                        } 
+                    },function(error){
+                        alert('Failed To get user media:'+error.code);
+                    });
+                }
+                function randomizeBoard(board){
+                         var newBoard = new Array();
+                         var cols = board.length;
+                         var rows = board[0].length;
+                         for(var i=0;i<cols;i++){
+                             newBoard[i] = new Array();
+                             for(var j=0;j<rows;j++){
+                                 var found = false;
+                                 var rndCol = 0;
+                                 var rndRow = 0;
+                                 while(!found){
+                                    var rndCol = Math.floor(Math.random()*cols);
+                                    var rndRow = Math.floor(Math.random()*rows);
+                                    if(board[rndCol][rndRow] != false){
+                                        found = true;
+                                    }
+                                 }
+                                 newBoard[i][j] = board[rndCol][rndRow];
+                                 board[rndCol][rndRow] = false;
+                             }
+                         }
+                         return newBoard;
+                }
+                function eventMouseUp(event){
+                    var mouseX;
+                    var mouseY;
+                    var pieceX;
+                    var pieceY;
+                    var x;
+                    var y;
+                    if(event.pageX||event.pageY){
+                        x = event.pageX;
+                        y = event.pageY;
+                    }else{
+                        x = e.clientX+document.body.scrollLeft+
+                        document.documentElement.scrollLeft;
+                        y = e.clientY +document.body.scrollTop +
+                        document.documentElement.scrollTop;
+                    }
+                    x -=cvs.offsetLeft;
+                    y -= cvs.offsetTop;
+                    mouseX = x;
+                    mouseY = y;
+                    var selectedList = new Array();
+                    for(var c=0;c<cols;c++){
+                        for(var r = 0;r<rows;r++){
+                            pieceX = c*partWidth +c*xPad +startXOffset;
+                            pieceY = r*partHeight +r*yPad +startYOffset;
+                            if((mouseY>= pieceY)&&(mouseY<=pieceY+partHeight)&&(mouseX>=pieceX)&&(mouseX<= pieceX+partWidth)){
+                                if(board[c][r].selected){
+                                    board[c][r].selected = false;
+                                }else{
+                                    board[c][r].selected = true;
+                                }
+                            }
+                            if(board[c][r].selected){
+                                selectedList.push({col:c,row:r});
+                            }
+                        }
+                    }
+                    if(selectedList.length == 2){
+                        var selected1 = selectedList[0];
+                        var selected2 = selectedList[1];
+                        var tempPiece1 = board[selected1.col][selected1.row];
+                        board[selected1.col][selected1.row] = board[selected2.col][selected2.row];
+                        board[selected2.col][selected2.row] = tempPiece1;
+                        board[selected1.col][selected1.row].selected = false;
+                        board[selected2.col][selected2.row].selected = false;
+                    }
+
+                }
+                function drawScreen(){
+                    ctx.fillStyle = '#303030';
+                    ctx.fillRect(0,0,cvs.width,cvs.height);
+                    ctx.strokeStyle = '#ffffff';
+                    ctx.strokeRect(5,5,cvs.width-10,cvs.height-10);
+                    for(var c=0;c<cols;c++){
+                        for(var r=0;r<rows;r++){
+                            var rempPiece =board[c][r];
+                            var imageX = rempPiece.finalCol*partWidth;
+                            var imageY = rempPiece.finalRow*partHeight;
+                            var placeX = c*partWidth+c*xPad +startXOffset;
+                            var placeY = r*partHeight+r*yPad +startYOffset;
+                            ctx.drawImage(videoElement,imageX,imageY,partWidth,partHeight,placeX,placeY,partWidth,partHeight);
+                            if(rempPiece.selected){
+                                ctx.strokeStyle = '#FFFF00';
+                                ctx.strokeRect(placeX,placeY,partWidth,partHeight);
+                            }
+                        }
+                    }
+                }
+
+          }
+        </script>
+        </body>
+        </html>
+  

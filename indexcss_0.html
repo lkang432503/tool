@@ -1,0 +1,123 @@
+<html>
+
+<head>
+    <title>Canvas Tutorial</title>
+    <style>
+         .container{
+            width: 100%;
+            height: 300px;
+            position: relative;
+            text-align: center;
+            transform: perspective(1200px);
+            transform-style: preserve-3d;
+            display: flex;
+            align-items:center;
+            transition: all 1s ease-in;
+         }
+         .box{
+             width: 300px;
+             height: 300px;
+             line-height: 300px;
+             text-align: center;
+             font-size: 60px;
+             
+             left: 50%;
+             top:50%;
+             flex-shrink:0;
+             transition: all 1s ease-in;
+             transform-style: preserve-3d;
+         }
+         .container .box:nth-of-type(1){
+             background-color: aqua;
+             
+         }
+         .container .box:nth-of-type(2){
+             background-color:aquamarine;
+            
+         }
+         .container .box:nth-of-type(3){
+             background-color:blueviolet;
+             
+         }
+         .container .box:nth-of-type(4){
+             background-color:burlywood;
+             
+         }
+         .container .box:nth-of-type(5){
+             background-color:coral;
+             
+         }
+         .container .box:nth-of-type(6){
+             background-color:darkgray;
+            
+         }
+         .container .box:nth-of-type(7){
+             background-color:gold;
+             
+         }
+    </style>
+</head>
+
+<body>
+    <div id="container" class="container">
+       <div class="box">
+          111111111111
+       </div>
+       <div class="box">
+        22222222222
+     </div>
+     <div class="box">
+        33333333333
+     </div>
+     <div class="box">
+        44444444444
+     </div>
+     <div class="box">
+        5555555555
+     </div>
+     <div class="box">
+        6666666666
+     </div>
+     <div class="box">
+       777777777
+     </div>
+    </div>
+    <script>
+           var body= document.getElementsByTagName('body')[0];
+           var direct = true;
+           var curDiff = 500;
+           var diffD = 0;
+           body.onclick=function(){
+            var nodeList = document.getElementsByClassName('box');
+            if(Math.abs(diffD)>= nodeList.length){
+                direct = !direct;
+            }
+             
+              document.getElementById('container').style.transform = '  translate3d('+curDiff+'px, 0px, 0px)';
+                 var _index_0= 0;
+                var _diffD = Math.abs(diffD)
+                 for(var i= _diffD;i<nodeList.length;i++){
+                     console.log(i);
+                     var node = nodeList[i];
+                     node.style.transform = 'translate3d(0,0,'+(-100)*_index_0+'px) rotateY('+(-50*_index_0)+'deg)';
+                     _index_0++;
+                 }
+                 _index_0 =1;
+                 for(var i= _diffD-1;i>=0;i--){
+                     var node = nodeList[i];
+                     node.style.transform = 'translate3d(0,0,'+(-100)*_index_0+'px) rotateY('+(50*_index_0)+'deg)';
+                     _index_0++;
+                 }
+                 if(!direct){
+                   
+                   curDiff += 200;
+                   diffD--;
+                  }else{
+                   curDiff -= 200;
+                   diffD++;
+                  }
+           }
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,56 @@
+<html>
+    
+    <head>
+        <title>Canvas Tutorial</title>
+        <style>
+            canvas {
+                border: 1px solid black;
+            }
+        </style>
+    </head>
+    
+    <body onload="start()">
+        <canvas id="tutorial" width="750" height="1136"></canvas>
+        <script>
+             var cvs = document.getElementById('tutorial');
+             var context = cvs.getContext('2d');
+             function start(){
+                //  var x = 100;
+                //  var y = 100;
+                //  var width = 50;
+                //  var height = 50;
+                
+
+                //   context.fillStyle="black";
+                //   context.fillRect(20,20,25,25);
+                  
+                //   context.setTransform(1,0,0,1,0,0);
+                //   var angle = 45*Math.PI/180;
+                //   context.translate(x+0.5*width,y+0.5*height);
+
+                //   context.rotate(angle);
+                //   context.scale(2,2);
+                //   context.fillStyle = "red";
+                //   context.fillRect(-0.5*width,-0.5*height,width,height);
+                // context.scale(2,2);
+                // context.fillStyle="red";
+                // context.fillRect(0,0,50,50);
+                // var gr = context.createLinearGradient(0,0,100,100);
+                var gr = context.createRadialGradient(50,50,25,100,100,100);
+                gr.addColorStop(0,'rgb(255,0,0)');
+                gr.addColorStop(0.5,'rgb(0,255,0)');
+                gr.addColorStop(1,'rgb(255,0,0)');
+                context.strokeStyle=gr;
+                context.arc(100,100,50,0,Math.PI*2,false);
+                context.stroke();
+                // context.fillRect(0,0,200,200);
+                // context.strokeRect(0,0,100,100);
+                // context.strokeRect(0,100,50,100);
+                // context.strokeRect(0,200,200,100);
+              
+             }
+            
+        </script>
+    </body>
+    
+    </html>

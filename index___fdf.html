@@ -1,0 +1,72 @@
+<html>
+    
+    <head>
+        <title>Canvas Tutorial</title>
+        <style>
+            canvas {
+                border: 1px solid black;
+            }
+        </style>
+    </head>
+    
+    <body onload="start()">
+        <canvas id="tutorial" width="750" height="1136"></canvas>
+        <script>
+            window.requestAnimFram = (function(){
+                return window.requestAnimationFrame||
+                window.webkitRequestAnimationFrame||
+                window.mozRequestAnimationFram||
+                window.msRequestAnimationFrame||
+                function(callback){
+                    window.setTimeout(callback,1000/60);
+                }
+            })();
+            function start(){
+                var theCanvas = document.getElementById('tutorial');
+                var context = theCanvas.getContext('2d');
+                function drawScreen(){
+                    // context.globalAlpha = 1;
+                    // context.fillStyle = '#000000';
+                    // context.fillRect(0,0,640,480);
+                    // context.globalAlpha = 0.8;
+                    // context.drawImage(helloWorldImage,0,0);
+                    // if(fadeIn){
+                    //     alpha += 0.01;
+                    //     if(alpha>=1){
+                    //         fadeIn = false;
+                    //     }
+                    // }else{
+                    //     alpha -= 0.01;
+                    //     if(alpha < 0){
+                    //         alpha  = 0;
+                    //         fadeIn = true;
+                    //     }
+                    // }
+                    // context.font = "72px Sans-Serif";
+                    // context.textBaseLine = "top";
+                    // context.globalAlpha = alpha;
+                    // context.fillStyle = "#ffffff";
+                    // context.fillText(text,150,200);
+                    context.fillStyle = '#aaaaaa';
+                    context.fillRect(0,0,200,200);
+                    context.fillStyle = '#000000';
+                    context.font = '20px _sans';
+                    context.textBaseline = 'top';
+                    context.fillText('Canvas!',0,0);
+                }
+                var text = "Hello World";
+                var alpha = 0;
+                var fadeIn = true;
+                var helloWorldImage = new Image();
+                helloWorldImage.src = 'bg.png';
+                
+              (function animloop(){
+                  requestAnimFram(animloop);
+                  drawScreen();
+              })();
+            }
+            
+        </script>
+    </body>
+    
+    </html>

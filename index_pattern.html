@@ -1,0 +1,37 @@
+<html>
+    
+    <head>
+        <title>Canvas Tutorial</title>
+        <style>
+            canvas {
+                border: 1px solid black;
+            }
+        </style>
+    </head>
+    
+    <body onload="start()">
+        <canvas id="tutorial" width="750" height="1136"></canvas>
+        <script>
+             var cvs = document.getElementById('tutorial');
+             var context = cvs.getContext('2d');
+             function start(){
+                var fillImg = new Image();
+                fillImg.src='test.png';
+                fillImg.onload = function(){
+                    var fillPattern1 = context.createPattern(fillImg,'no-repeat');
+                    var fillPattern2 = context.createPattern(fillImg,'repeat-x');
+                    var fillPattern3 = context.createPattern(fillImg,'repeat-y');
+                    context.fillStyle = fillPattern1;
+                    context.fillRect(0,0,100,100);
+                    // context.fillStyle = fillPattern2;
+                    // context.fillRect(0,220,100,100);
+                    context.translate(0,110);
+                    context.fillStyle = fillPattern2;
+                    context.fillRect(0,0,100,100);
+                }
+             }
+            
+        </script>
+    </body>
+    
+    </html>

@@ -1,0 +1,52 @@
+<html>
+    
+    <head>
+        <title>Canvas Tutorial</title>
+        <style>
+            canvas {
+                border: 1px solid black;
+            }
+        </style>
+    </head>
+    
+    <body onload="start()">
+        <canvas id="tutorial" width="750" height="1136"></canvas>
+        <script>
+             var cvs = document.getElementById('tutorial');
+             var context = cvs.getContext('2d');
+             function start(){
+                  context.strokeStyle = 'block';
+                  context.lineWidth = 10;
+                  context.lineJoin= 'bevel';
+                  context.lineCap = 'round';
+                  context.beginPath();
+                  context.moveTo(0,0);
+                  context.lineTo(25,0);
+                  context.lineTo(25,25);
+                  context.stroke();
+                  context.closePath();
+
+
+
+                  context.beginPath();
+                  context.moveTo(10,50);
+                  context.lineTo(35,50);
+                  context.lineTo(35,75);
+                  context.stroke();
+                  context.closePath();
+
+
+                  context.lineJoin = 'round';
+                  context.lineCap = 'butt';
+                  context.beginPath();
+                  context.moveTo(10,100);
+                  context.lineTo(35,100);
+                  context.lineTo(35,125);
+                  context.stroke();
+                  context.closePath();
+             }
+            
+        </script>
+    </body>
+    
+    </html>

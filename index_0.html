@@ -1,0 +1,154 @@
+<html>
+
+<head>
+    <title>Canvas Tutorial</title>
+    <style>
+        canvas {
+            border: 1px solid black;
+        }
+    </style>
+</head>
+
+<body>
+    <canvas id="tutorial" width="300" height="300"></canvas>
+    <script>
+        // function draw() {
+        //     var canvas = document.getElementById('tutorial');
+        //     if (canvas) {
+
+        //         var ctx = canvas.getContext('2d');
+        //         // ctx.beginPath();
+        //         //     ctx.moveTo(75,25);
+        //         //    ctx.quadraticCurveTo(25,25,25,62.5);
+        //         //    ctx.quadraticCurveTo(25,100,50,100);
+        //         // ctx.quadraticCurveTo(50,120,30,125);
+        //         // ctx.quadraticCurveTo(60,120,65,100);
+        //         // ctx.quadraticCurveTo(125,100,125,62.5);
+        //         // ctx.quadraticCurveTo(125,25,75,25);
+        //         // ctx.stroke();
+        //         // ctx.beginPath();
+        //         //  ctx.moveTo(75,25);
+        //         //  ctx.lineTo(25,25);
+        //         //  ctx.lineTo(25,62.5);
+
+        //         //  ctx.strokeStyle = "blue";
+        //         // //  ctx.closePath();
+        //         //  ctx.stroke();
+        //         //  for(var i=0;i<6;i++){
+        //         //      for(var j=0;j<6;j++){
+        //         //          ctx.strokeStyle = 'rgb(0,'+Math.floor(255-42.5*i)+','+
+        //         //          Math.floor(255-42.5*j)+')';
+        //         //          ctx.beginPath();
+        //         //          ctx.arc(12.5+j*25,12.5+i*25,10,0,Math.PI*2,true);
+        //         //          ctx.stroke();
+        //         //      }
+        //         //  }
+        //         // var ctx = document.getElementById('canvas').getContext('2d');
+        //         // 画背景
+        //         //   ctx.fillStyle = '#FD0';
+        //         //   ctx.fillRect(0,0,75,75);
+        //         //   ctx.fillStyle = '#6C0';
+        //         //   ctx.fillRect(75,0,75,75);
+        //         //   ctx.fillStyle = '#09F';
+        //         //   ctx.fillRect(0,75,75,75);
+        //         //   ctx.fillStyle = '#F30';
+        //         //   ctx.fillRect(75,75,75,75);
+        //         //   ctx.fillStyle = '#FFF';
+
+        //         //   // 设置透明度值
+        //         //   ctx.globalAlpha = 0.8;
+
+        //         //   // 画半透明圆
+        //         //   for (var i=0;i<7;i++){
+        //         //       ctx.beginPath();
+        //         //       ctx.arc(75,75,10+10*i,0,Math.PI*2,true);
+        //         //       ctx.fill();
+        //         //   }
+        //         var lineCap = ['butt', 'round', 'square'];
+        //         ctx.strokeStyle = '#09f';
+        //         ctx.beginPath();
+        //         ctx.moveTo(10, 10);
+        //         ctx.lineTo(140, 10);
+        //         ctx.moveTo(10, 140);
+        //         ctx.lineTo(140, 140);
+        //         ctx.stroke();
+        //         ctx.strokeStyle = "black";
+        //         for (var i = 0; i < lineCap.length; i++) {
+        //             ctx.lineWidth = 15;
+        //             ctx.lineCap = lineCap[i];
+        //             ctx.beginPath();
+        //             ctx.moveTo(25 + i * 50, 10);
+        //             ctx.lineTo(25 + i * 50, 140);
+        //             //  ctx.lineTo(25+i*50,140);
+        //             ctx.stroke();
+        //         }
+        //     }
+        // }
+
+        // function draw() {
+        //     var ctx = document.getElementById('tutorial').getContext('2d');
+        //     var lineJoin = ['round', 'bevel', 'miter'];
+        //     ctx.lineWidth = 10;
+        //     for (var i = 0; i < lineJoin.length; i++) {
+        //         ctx.lineJoin = lineJoin[i];
+        //         ctx.beginPath();
+        //         ctx.moveTo(-5, 5 + i * 40);
+        //         ctx.lineTo(35, 45 + i * 40);
+        //         ctx.lineTo(75, 5 + i * 40);
+        //         ctx.lineTo(115, 45 + i * 40);
+        //         ctx.lineTo(155, 5 + i * 40);
+        //         ctx.stroke();
+        //     }
+        // }
+        // var canvas = document.getElementById('tutorial');
+        // var ctx = document.getElementById('tutorial').getContext('2d');
+        // var offset = 0;
+
+        // function draw() {
+        //     ctx.clearRect(0, 0, canvas.width, canvas.height);
+        //     ctx.setLineDash([4, 2]);
+        //     ctx.lineDashOffset = -offset;
+        //     ctx.strokeRect(10, 10, 100, 100);
+        // }
+
+        // function march() {
+        //     offset++;
+        //     if (offset > 16) {
+        //         offset = 0;
+        //     }
+        //     draw();
+        //     setTimeout(march, 20);
+        // }
+
+        // march();
+        function draw() {
+  var ctx = document.getElementById('tutorial').getContext('2d');
+
+//   // 创建新 image 对象，用作图案
+//   var img = new Image();
+//   img.src = './bg.png';
+//   img.onload = function(){
+
+//     // 创建图案
+//     var ptrn = ctx.createPattern(img,'repeat');
+//     ctx.fillStyle = ptrn;
+//     ctx.fillRect(0,0,150,150);
+    
+//   }
+// ctx.shadowOffsetX = 2;
+//   ctx.shadowOffsetY = 2;
+//   ctx.shadowBlur = 2;
+//   ctx.shadowColor = "rgba(0, 0, 0, 0.5)";
+ 
+//   ctx.font = "20px Times New Roman";
+//   ctx.fillStyle = "Black";
+//   ctx.fillText("Sample String", 30, 80);
+ctx.beginPath(); 
+  ctx.arc(50, 50, 30, 0, Math.PI*2, true);
+  ctx.arc(50, 50, 15, 0, Math.PI*2, true);
+  ctx.fill();
+}  draw()
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,36 @@
+<html>
+    
+    <head>
+        <title>Canvas Tutorial</title>
+        <style>
+            canvas {
+                border: 1px solid black;
+            }
+        </style>
+    </head>
+    
+    <body onload="start()">
+        <canvas id="tutorial" width="750" height="1136"></canvas>
+        <script>
+             var cvs = document.getElementById('tutorial');
+             var context = cvs.getContext('2d');
+             function start(){
+                 context.fillStyle="black";
+                 context.fillRect(10,10,200,200);
+                 context.fillStyle="red";
+                 context.fillRect(1,1,50,50);
+                 context.globalCompositeOperation = "source-over";
+                 context.fillRect(60,1,50,50);
+
+                //  context.globalCompositeOperation = "destination-atop";
+                //  context.fillRect(1,60,50,50);
+
+                 context.globalAlpha = .3;
+                 context.globalCompositeOperation = "source-atop";
+                 context.fillRect(60,60,50,50);
+             }
+            
+        </script>
+    </body>
+    
+    </html>

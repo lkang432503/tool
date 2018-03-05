@@ -1,0 +1,39 @@
+<html>
+    
+    <head>
+        <title>Canvas Tutorial</title>
+        <style>
+            canvas {
+                border: 1px solid black;
+            }
+        </style>
+    </head>
+    
+    <body onload="start()">
+        <canvas id="tutorial" width="750" height="1136"></canvas>
+        <script>
+             var cvs = document.getElementById('tutorial');
+             var context = cvs.getContext('2d');
+             function start(){
+                  context.beginPath();
+                  context.strokeStyle = "black";
+                  context.lineWidth = 5;
+                //   context.moveTo(0,0);
+                //   context.arc(100,25,5,0,Math.PI*2,false)
+                //   context.arc(0,50,5,0,Math.PI*2,false);
+                //   context.moveTo(0,0);
+                //   context.quadraticCurveTo(100,25,0,50);
+                context.moveTo(150,0);
+                context.arc(0,125,5,0,Math.PI*2,false)
+                context.arc(300,175,5,0,Math.PI*2,false);
+                context.arc(150,300,5,0,Math.PI*2,false);
+                  context.moveTo(150,0);
+                  context.bezierCurveTo(0,125,300,175,150,300);
+                  context.stroke();
+                  context.closePath();
+             }
+            
+        </script>
+    </body>
+    
+    </html>

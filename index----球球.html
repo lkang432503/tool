@@ -1,0 +1,83 @@
+<html>
+    
+    <head>
+        <title>Canvas Tutorial</title>
+        <style>
+            canvas {
+                border: 1px solid black;
+            }
+        </style>
+    </head>
+    
+    <body>
+        <canvas id="tutorial" width="500" height="500" style="position:absolute;top:50px;left:50px;"></canvas>
+        <script>
+             var cvs = document.getElementById('tutorial');
+             var context = cvs.getContext('2d');
+             window.addEventListener('load',function(){
+                   var speed = 5;
+                   var p1 = {x:20,y:20};
+                   var angle = 20;
+                   var radians,xunits,yunits;
+                   function setAngleInfor(){
+                        radians = angle*Math.PI/180;
+                        xunits = Math.cos(radians)*speed;
+                        yunits = Math.sin(radians)*speed;
+                   }
+                   setAngleInfor();
+                   var ball = {
+                       x:p1.x,
+                       y:p1.y,
+                   }
+                   var points = new Array();
+                   function gameLoop(){
+                       window.setTimeout(gameLoop,20);
+                       drawScreen();
+                   }
+                   gameLoop();
+                   function drawScreen(){
+                       context.fillStyle = '#EEEEEE';
+                       context.fillRect(0,0,cvs.width,cvs.height);
+                       context.strokeStyle="#000000";
+                       context.strokeRect(1,1,cvs.width-2,cvs.height-2);
+                       ball.x += xunits;
+                       ball.y += yunits;
+                       if(ball.x>cvs.width||ball.x<0){
+                           angle = 180-angle;
+                              ball.x -= xunits;
+                           ball.y -= yunits;
+                           setAngleInfor();
+                        
+                       }
+                       if(ball.y<0||ball.y>cvs.height){
+                           angle = 360-angle;
+                               ball.x -= xunits;
+                           ball.y -= yunits;
+                           setAngleInfor();
+                       
+                       }
+                       points.push({
+                           x:ball.x,
+                           y:ball.y
+                       });
+                       context.fillStyle="#000000";
+                       if(points.length>100){
+                           points.shift();
+                       }
+                       for(var i = 0;i<points.length;i++){
+                           context.beginPath();
+                           context.arc(points[i].x,points[i].y,1,0,Math.PI*2,false);
+                           context.closePath();
+                           context.fill();
+                       }
+                       context.beginPath();
+                       context.arc(ball.x,ball.y,15,0,Math.PI*2,true);
+                       context.closePath();
+                       context.fill();
+                   }
+
+             },false);
+        </script>
+        </body>
+        </html>
+  

@@ -1,0 +1,185 @@
+<!doctype html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8" />
+
+    <title>橡皮擦效果</title>
+    <script src="./js/flexible.js"></script>
+	<style type="text/css">
+		html,body{
+			width: 100%;
+			height: 100%;
+			margin:0;
+			padding:0;
+		}
+		.view{
+			position: relative;
+			width: 100%;
+			height: 100%;
+			overflow: hidden;
+		}
+		.box{
+			position: absolute;
+			left:0;
+			top:0;
+			width: 100%;
+			height: 100%;
+			background:#000 url("tmw_desert_spacing.png") no-repeat center center;
+			background-size: auto 100%;
+			backface-visibility: hidden;
+			overflow: hidden;
+		}
+		#cas{
+			opacity: 1;
+			-webkit-transition:opacity .5s;
+			-ms-transition:opacity .5s;
+			-moz-transition:opacity .5s;
+		}
+		
+		.noOp{
+			opacity: 0 !important;
+		}
+        .test-fnt-box{
+            width: 3rem;
+            height: 2rem;
+            font-size: 24px;
+            color: #000;
+            background-color: #fff;
+            position: absolute;
+            top:50%;
+            left: 50%;
+            margin-left: -1.5rem;
+            margin-top:-1rem;
+            z-index: 99;
+        }
+	</style>
+</head>
+<body>
+<div class="view">
+    <div class="test-fnt-box">
+    测试文字。。。。
+    </div>
+	<div class="box" id="bb">
+		<canvas id="cvs"></canvas>
+	</div>
+</div>
+
+<script charset="utf-8">
+      /**
+         * 橡皮擦功能
+         * @params {object} config 配置项{canvas,width,height}
+         * @params {function} cb 擦除成功后
+         * 
+      */
+    function eraser(config,cb){
+        var self = this;
+        var canvas = this.canvas = config.canvas;
+        var ctx = this.ctx = this.canvas.getContext('2d');
+        this.a = config.a?config.a:30;
+        this.callback = cb;
+        this.totimes = config.totimes?config.totimes:100;
+        this.distance = config.distance?config.distance:30;
+        this.timeout = null;
+        this.width = config.width?config.width:document.body.clientWidth;
+        this.height = config.height?config.height:document.body.clientHeight;
+        this.sourceImg = config.imgs;
+        this.canvas.width = this.width;
+        this.canvas.height = this.height;
+        this.x1= 0;
+        this.y1 = 0;
+        var img = new Image();
+        img.src = this.sourceImg;
+        img.onload = function(){
+            var w = canvas.height*img.width/img.height;
+            ctx.drawImage(img,(canvas.width-w)/2,0,w,canvas.height);
+            self.tapClip();
+        }
+    }
+    eraser.prototype.getClipArea = function(e,hastouch){
+      var x = hastouch?e.targetTouches[0].pageX:e.clientX;
+      var y = hastouch?e.targetTouches[0].pageY:e.clientY;
+      var ndom = this.canvas;
+      while(ndom.tagName !== "BODY"){
+          x -= ndom.offsetLeft;
+          y -= ndom.offsetTop;
+          ndom = ndom.parentNode;
+      }
+      return{
+          x:x,
+          y:y
+      }
+    };
+    eraser.prototype.tapClip = function(){
+        var a = this.a;
+        var ctx = this.ctx;
+        var canvas = this.canvas;
+        var self = this;
+        var hastouch= this.hastouch = "ontouchstart" in window ? true : false,
+			tapstart = hastouch ? "touchstart" : "mousedown",
+			tapmove = hastouch ? "touchmove" : "mousemove",
+            tapend = hastouch ? "touchend" : "mouseup";
+            var area;
+            var x2,y2;
+            ctx.lineCap = "round";
+            ctx.lineJoin = "round";
+            ctx.lineWidth = a*2;
+            ctx.globalCompositeOperation = "destination-out";
+            window.addEventListener(tapstart,function(e){
+                clearTimeout(self.timeout);
+                e.preventDefault();
+                area = self.getClipArea(e,hastouch);
+                self.x1 = area.x;
+                self.y1 = area.y;
+                self.drawLine(self.x1,self.y1);
+                this.addEventListener(tapmove,tapmoveHandler);
+                this.addEventListener(tapend,function(){
+                    this.removeEventListener(tapmove,tapmoveHandler);
+                    self.timeout = setTimeout(function(){
+                        var imgData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+                        var dd = 0;
+                        for (var x = 0; x < imgData.width; x += self.distance) {
+                            for (var y = 0; y < imgData.height; y += self.distance) {
+                                var i = (y * imgData.width + x) * 4;
+                                if (imgData.data[i + 3] > 0) { dd++ }
+                            }
+                        }
+                        if (dd / (imgData.width * imgData.height / (self.distance * self.distance)) < 0.4) {
+                            self.callback&&self.callback();
+                        } 
+                    },self.totimes);
+                });
+            });
+            function tapmoveHandler(e){
+                clearTimeout(self.timeout);
+                e.preventDefault();
+                area = self.getClipArea(e,self.hastouch);
+                var x2 = area.x;
+                var y2 = area.y;
+                self.drawLine(self.x1,self.y1,x2,y2);
+                self.x1 = x2;
+                self.y1 = y2;
+            }
+    };
+    eraser.prototype.drawLine = function(x1,y1,x2,y2){
+        var ctx = this.ctx;
+        ctx.save();
+        ctx.beginPath();
+        if(arguments.length ==2){
+            ctx.arc(x1,y1,this.a,0,2*Math.PI);
+            ctx.fill();
+        }else{
+            ctx.moveTo(x1,y1);
+            ctx.lineTo(x2,y2);
+            ctx.stroke();
+        }
+        ctx.restore();
+    };
+   var eraserTest= new eraser({
+       canvas:document.getElementById('cvs'),
+       imgs:'bg.png',
+   },function(){
+       console.log('成功擦除');
+   });
+</script>
+</body>
+</html>

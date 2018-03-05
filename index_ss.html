@@ -1,0 +1,32 @@
+<html>
+    
+    <head>
+        <title>Canvas Tutorial</title>
+        <style>
+            canvas {
+                border: 1px solid black;
+            }
+        </style>
+    </head>
+    
+    <body>
+        <canvas id="tutorial" width="600" height="600"></canvas>
+        <script>
+             var cvs = document.getElementById('tutorial');
+             var context = cvs.getContext('2d');
+             var spaceShip= new Image();
+             spaceShip.addEventListener('load',eventSheetLoaded,false);
+             spaceShip.src="Z_chat_bottom_1.png";
+             counter = 0;
+             function eventSheetLoaded(){
+                context.fillStyle="#aaaaaa";
+                context.fillRect(0,0,500,500);
+                window.setTimeout(eventSheetLoaded,100);
+                context.drawImage(spaceShip,38*counter,0,32,32,50,50,64,64);
+                counter ^= 1;
+             }
+            
+        </script>
+    </body>
+    
+    </html>

@@ -1,0 +1,30 @@
+<html>
+    
+    <head>
+        <title>Canvas Tutorial</title>
+        <style>
+            canvas {
+                border: 1px solid black;
+            }
+        </style>
+    </head>
+    
+    <body>
+        <canvas id="tutorial" width="256" height="256" style="position:absolute;top:50px;left:50px;"></canvas>
+        <canvas id="canvas2" width="32" height="32" style="position:absolute;top:256px;left:50px;"></canvas>
+        <script>
+             var cvs = document.getElementById('tutorial');
+             var context = cvs.getContext('2d');
+             var tileSheet = new Image();
+             tileSheet.addEventListener('load',eventSheetloaded,false);
+             tileSheet.src="tmw_desert_spacing.png";
+             var cvs2 = document.getElementById('canvas2');
+             var context2 = cvs2.getContext('2d');
+             function eventSheetloaded(){
+                 context.drawImage(tileSheet,0,0);
+                 context2.drawImage(cvs,32,0,32,32,0,0,32,32);
+             }
+        </script>
+        </body>
+        </html>
+  

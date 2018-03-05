@@ -1,0 +1,29 @@
+<html>
+    
+    <head>
+        <title>Canvas Tutorial</title>
+        <style>
+            canvas {
+                border: 1px solid black;
+            }
+        </style>
+    </head>
+    
+    <body>
+        <canvas id="tutorial" width="600" height="600"></canvas>
+        <script>
+             var cvs = document.getElementById('tutorial');
+             var context = cvs.getContext('2d');
+             var spaceShip= new Image();
+             spaceShip.addEventListener('load',eventSheetLoaded,false);
+             spaceShip.src="Z_chat_bottom_1.png";
+             function eventSheetLoaded(){
+                  context.drawImage(spaceShip,0,0);
+                  context.drawImage(spaceShip,50,50);
+                  context.drawImage(spaceShip,70,70,16,16);
+             }
+            
+        </script>
+    </body>
+    
+    </html>

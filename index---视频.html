@@ -1,0 +1,81 @@
+<html>
+    
+    <head>
+        <title>Canvas Tutorial</title>
+        <style>
+            canvas {
+                border: 1px solid black;
+            }
+            body{
+                width: 200px;
+                height: 200px;
+            }
+            .canvas-box{
+                width: 500px;
+            }
+            .canvas-box>canvas{
+                display: inline-block;
+            }
+        </style>
+    </head>
+    
+        <body onload="load()">
+          <video src="video.ogv" width="334" height="200"   controls></video>
+          <div class="canvas-box">
+                <canvas width="200" height="200" class="canvas-one"></canvas>
+                <canvas width="200" height="200" class="canvas-two"></canvas>
+          </div>
+             
+            <script>
+                
+              function load(){
+                  var video = document.getElementsByTagName('video')[0];
+                  var canvas_0 = document.getElementsByClassName('canvas-one')[0];
+                  var canvas_1 = document.getElementsByClassName('canvas-two')[0];
+                  var ctx_0 = canvas_0.getContext('2d');
+                  var ctx_1 = canvas_1.getContext('2d');
+                
+                  var img = new Image();
+                  img.src="tmw_desert_spacing.png";
+                  video.addEventListener('play',function(e){
+                       var width = video.width;
+                       var height = video.height;
+                       var scale = width/canvas_0.width;
+                       canvas_0.height = height/scale;
+                       canvas_1.height = height/scale;
+                       gameLoop();
+                  });
+                  function gameLoop(){
+                     var setTimeOut =setTimeout(gameLoop,20);
+                      if(video.paused){
+                          clearTimeout(setTimeOut);
+                          return;
+                      }
+                      ctx_0.drawImage(video,0,0,video.width,video.height,0,0,canvas_0.width,canvas_0.height);
+                      let frame = ctx_0.getImageData(0, 0, canvas_0.width, canvas_0.height);
+                      ctx_1.drawImage(img,0,0,img.width,img.height,0,0,canvas_0.width,canvas_0.height);
+                      var ImageData = ctx_1.getImageData(0, 0, canvas_0.width, canvas_0.height);
+                        let l = frame.data.length / 4;
+
+                        for (let i = 0; i < l; i++) {
+                        let r = frame.data[i * 4 + 0];
+                        let g = frame.data[i * 4 + 1];
+                        let b = frame.data[i * 4 + 2];
+                        if (g > 100 && r > 100 && b < 43){
+                            frame.data[i * 4 + 0] = ImageData.data[i * 4 + 0];
+                            frame.data[i * 4 + 1] = ImageData.data[i * 4 + 1];
+                            frame.data[i * 4 + 2] = ImageData.data[i * 4 + 2];
+                            frame.data[i * 4 + 3] = ImageData.data[i * 4 + 3];
+                        }
+                           
+                        }
+                       
+                    
+                      
+                      ctx_1.putImageData(frame, 0, 0);  
+                  }
+              }
+            </script>
+        </body>
+        </html>
+  

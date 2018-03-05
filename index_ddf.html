@@ -1,0 +1,50 @@
+<html>
+    
+    <head>
+        <title>Canvas Tutorial</title>
+        <style>
+            canvas {
+                border: 1px solid black;
+            }
+        </style>
+    </head>
+    
+    <body onload="start()">
+        <canvas id="tutorial" width="750" height="1136"></canvas>
+        <script>
+             var cvs = document.getElementById('tutorial');
+             var context = cvs.getContext('2d');
+             function start(){
+                  context.fillStyle="black";
+                  context.fillRect(10,10,200,200);
+                  context.save();
+                  context.beginPath();
+
+                  context.rect(10,10,50,50);
+                  context.clip();
+                  
+                  context.beginPath();
+                  context.strokeStyle = "red";
+                  context.lineWidth = 5;
+                  context.arc(100,100,100,(Math.PI/180)*0,(Math.PI/180)*360,false);
+                  
+                  context.stroke();
+                  context.closePath();
+
+                  context.restore();
+                  context.beginPath();
+                  context.rect(0,0,500,500);
+                  context.clip();
+                  context.beginPath();
+                  context.strokeStyle="blue";
+                  context.lineWidth = 5;
+                  context.arc(100,100,50,0,Math.PI*2,false);
+                  context.stroke();
+                  context.closePath();
+
+             }
+            
+        </script>
+    </body>
+    
+    </html>

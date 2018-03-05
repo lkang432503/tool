@@ -1,0 +1,112 @@
+<html>
+    
+    <head>
+        <title>Canvas Tutorial</title>
+        <style>
+            canvas {
+                border: 1px solid black;
+            }
+        </style>
+    </head>
+    
+    <body>
+        <canvas id="tutorial" width="500" height="500" style="position:absolute;top:50px;left:50px;"></canvas>
+        <script>
+             var cvs = document.getElementById('tutorial');
+             var context = cvs.getContext('2d');
+             function boundingBoxCollide(object1,object2){
+                 var left1= object1.x;
+                 var left2 = object2.x;
+                 var right1 = object1.x  + object1.width;
+                 var right2 = object2.x+object2.width;
+                 var top1 = object1.y;
+                 var top2 = object2.y;
+                 var bottom1 = object1.y+object1.height;
+                 var bottom2 = object2.y+object2.height;
+                 if(left1>right2) return false;
+                 if(left2>right1) return false;
+                 if(top1>bottom2) return false;
+                 if(top2>bottom1) return false;
+                 return true;
+             }
+             window.addEventListener('load',function(){
+                 var blueObject = {};
+                  blueObject.x=0;
+                  blueObject.y=200;
+                  blueObject.dx = 2;
+                  blueObject.width = 13;
+                  blueObject.height = 20;
+                  blueObject.image = new Image();
+                  blueObject.image.src = 'ui_07.png';
+                  blueObject.image.addEventListener('load',function(){
+                    context.drawImage(blueObject.image,0,0);
+                  blueObject.blueImageData = context.getImageData(0,0,blueObject.width,blueObject.height);
+                  context.clearRect(0,0,cvs.width,cvs.height);
+                  },false);
+                  var redObect = {};
+                  redObect.x = 348;
+                  redObect.y = 200;
+                  redObect.dx = -2;
+                  redObect.width = 28;
+                  redObect.height = 20;
+                  redObect.image = new Image();
+                  redObect.image.src = 'ui_03.png';
+                  redObect.image.addEventListener('load',function(){
+                    context.drawImage(redObect.image,0,0);
+                    redObect.redImageData = context.getImageData(0,0,redObect.width,redObect.height);
+                    context.clearRect(0,0,cvs.width,cvs.height);
+                    console.log("redObject.redImageData.data[3]="+redObect.redImageData.data[3]);
+                  },false);
+                  context.strokeStyle="blue";
+                  context.lineWidth = 1;
+                  context.save();
+                  gameLoop();
+                  function drawScreen(){
+                      blueObject.x += blueObject.dx;
+                      redObect.x += redObect.dx;
+                      context.clearRect(0,0,cvs.width,cvs.height);
+                      context.drawImage(blueObject.image,blueObject.x,blueObject.y);
+                     
+                      context.drawImage(redObect.image,redObect.x,redObect.y);
+                      context.strokeRect(blueObject.x,blueObject.y,blueObject.width,blueObject.height);
+                      context.strokeStyle="red";
+                      context.lineWidth = 1;
+                      context.strokeRect(redObect.x,redObect.y,redObect.width,redObect.height);
+                      context.restore();
+                      if(boundingBoxCollide(blueObject,redObect)){
+                          console.log('bouding Box collide');
+                          var xMin = Math.max(blueObject.x,redObect.x);
+                          var yMin = Math.max(blueObject.y,redObect.y);
+                          var xMax = Math.min(blueObject.x+blueObject.width,redObect.x+redObect.width);
+                          var yMax = Math.min(blueObject.y +blueObject.height,redObect.y+redObect.height);
+                            for(var pixelX = xMin;pixelX<xMax;pixelX++){
+                               for(var pixelY = yMin;pixelY<yMax;pixelY++){
+                                   var bluepixel = ((pixelX-blueObject.x)+(pixelY-blueObject.y)*blueObject.width)*4+3;
+                                   var redpixel = ((pixelX-redObect.x)+(pixelY-redObect.y)*redObect.width)*4+3;
+                                   if((blueObject.blueImageData.data[bluepixel] !==0)&&(redObect.redImageData.data[redpixel] !==0)){
+                                       console.log('pixel collision');
+                                       blueObject.dx = 0;
+                                       redObect.dx = 0;
+                                       break;
+                                   }
+                               }
+                            }
+
+
+
+
+                      }
+                  }
+                  function gameLoop(){
+                      window.setTimeout(gameLoop,100);
+                      drawScreen();
+                  }
+                  
+
+
+
+             },false);
+        </script>
+        </body>
+        </html>
+  

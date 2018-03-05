@@ -1,0 +1,53 @@
+<html>
+    
+    <head>
+        <title>Canvas Tutorial</title>
+        <style>
+            canvas {
+                border: 1px solid black;
+            }
+        </style>
+    </head>
+    
+    <body>
+        <canvas id="tutorial" width="600" height="600"></canvas>
+        <script>
+             var cvs = document.getElementById('tutorial');
+             var context = cvs.getContext('2d');
+             var tileSheet = new Image();
+             tileSheet.addEventListener('load',eventSheetloaded,false);
+             tileSheet.src="emoji.png";
+             var animationFrames = [1,2,3];
+             var frameIndex = 0;
+             var rotation = 90;
+             var x = 50;
+             var y = 50;
+             var dx = 1;
+             var dy = 0;
+             function eventSheetloaded (){
+                 window.setTimeout(eventSheetloaded,100);
+                 drawScreen();
+             }
+            function drawScreen(){
+                x = x+dx;
+                y = y+dy;
+                context.fillStyle = "#aaaaaa";
+                context.fillRect(0,0,500,500);
+                context.save();
+                context.setTransform(1,0,0,1,0,0);
+                context.translate(x+35,y+35);
+                var angleInRadians = rotation*Math.PI/180;
+                context.rotate(angleInRadians);
+                var sourceX = Math.floor(animationFrames[frameIndex]%3)*70;
+                // var sourceY = Math.floor(animationFrames[frameIndex]/3)*70;
+                var sourceY =0;
+                context.drawImage(tileSheet,sourceX,sourceY,70,70,-35,-35,70,70);
+                context.restore();
+                frameIndex++;
+                if(frameIndex == animationFrames.length){
+                    frameIndex = 0;
+                }
+
+            }
+        </script>
+        </body>

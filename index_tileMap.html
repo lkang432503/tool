@@ -1,0 +1,51 @@
+<html>
+    
+    <head>
+        <title>Canvas Tutorial</title>
+        <style>
+            canvas {
+                border: 1px solid black;
+            }
+        </style>
+    </head>
+    
+    <body>
+        <canvas id="tutorial" width="600" height="600"></canvas>
+        <script>
+             var cvs = document.getElementById('tutorial');
+             var context = cvs.getContext('2d');
+             var tileSheet = new Image();
+             tileSheet.addEventListener('load',eventSheetloaded,false);
+             tileSheet.src="tmw_desert_spacing.png";
+             var mapRows = 10;
+             var mapCols = 10;
+             var mapIndexOffset = 0;
+             var tileMap = [
+                 [29,29,29,29,29,29,29,29,29,29],
+                 [29,29,29,29,29,29,29,38,29,29],
+                 [29,29,29,29,29,29,38,29,29,29],
+                 [29,29,29,19,17,17,20,29,29,29],
+                 [45,29,29,10,45,30,8,29,29,29],
+                 [29,29,29,10,30,31,8,29,29,29],
+                 [29,29,29,27,1,1,28,29,29,29],
+                 [29,29,29,29,29,29,29,29,45,29],
+                 [29,29,45,29,29,38,29,45,29,29],
+                 [29,29,29,29,38,29,29,29,29,29]
+             ]
+             function eventSheetloaded(){
+                 drawScreen();
+             }
+             function drawScreen(){
+                for(var rowCtr = 0;rowCtr<mapRows;rowCtr++){
+                    for(var colCtr = 0;colCtr<mapCols;colCtr++){
+                        var tileId = tileMap[rowCtr][colCtr]+mapIndexOffset;
+                        var sourceX = Math.floor(tileId%8)*32+Math.floor(tileId%8)+1;
+                        var sourceY = Math.floor(tileId/8)*32+Math.floor(tileId/8)+1;
+                        context.drawImage(tileSheet,sourceX,sourceY,32,32,colCtr*32,rowCtr*32,32,32);
+                    }
+                }
+             }
+        </script>
+        </body>
+        </html>
+  

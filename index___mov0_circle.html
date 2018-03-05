@@ -1,0 +1,43 @@
+<html>
+    
+    <head>
+        <title>Canvas Tutorial</title>
+        <style>
+            canvas {
+                border: 1px solid black;
+            }
+        </style>
+    </head>
+    
+    <body>
+        <canvas id="tutorial" width="500" height="500" style="position:absolute;top:50px;left:50px;"></canvas>
+        <script>
+             var cvs = document.getElementById('tutorial');
+             var context = cvs.getContext('2d');
+             window.addEventListener('load',function(){
+                     function drawScreen(){
+                         context.fillStyle="#EEEEEE";
+                         context.fillRect(0,0,cvs.width,cvs.height);
+                         context.strokeStyle="#000000";
+                         context.strokeRect(1,1,cvs.width-2,cvs.height-2);
+                         y += speed;
+                         context.fillStyle="#000000";
+                         context.beginPath();
+                         context.arc(x,y,15,0,Math.PI*2,true);
+                         context.closePath();
+                         context.fill();
+                     }
+                     var speed = 5;
+                     var y = 10;
+                     var x=250;
+                     function gameLoop(){
+                         window.setTimeout(gameLoop,20);
+                         drawScreen();
+                     }
+                    gameLoop();
+
+             },false);
+        </script>
+        </body>
+        </html>
+  

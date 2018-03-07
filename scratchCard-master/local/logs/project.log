@@ -1,0 +1,54 @@
+2018-03-06T09:32:10.444Z - normal: Load ~/.CocosCreator/settings.json
+2018-03-06T09:32:10.448Z - normal: checking language setting...
+2018-03-06T09:32:10.449Z - normal: Language: zh
+2018-03-06T09:32:14.230Z - success: protocol editor-framework registered
+2018-03-06T09:32:14.230Z - success: protocol app registered
+2018-03-06T09:32:14.230Z - success: protocol theme registered
+2018-03-06T09:32:14.230Z - success: protocol packages registered
+2018-03-06T09:32:14.230Z - success: protocol unpack registerred
+2018-03-06T09:32:14.231Z - success: protocol disable-commonjs registerred
+2018-03-06T09:32:14.507Z - normal: connected!
+2018-03-06T09:32:14.515Z - normal: Check project F:\CocosCreator\scratchCard-master
+2018-03-06T09:32:14.542Z - normal: Initializing Cocos2d
+2018-03-06T09:32:15.977Z - normal: Initializing Asset Database
+2018-03-06T09:32:16.405Z - success: protocol uuid registerred
+2018-03-06T09:32:16.405Z - success: protocol db registerred
+2018-03-06T09:32:16.406Z - success: protocol thumbnail registerred
+2018-03-06T09:32:16.406Z - normal: Loading editor/builtin packages
+2018-03-06T09:32:16.712Z - success: anysdk loaded
+2018-03-06T09:32:16.902Z - success: assets loaded
+2018-03-06T09:32:16.904Z - success: builder loaded
+2018-03-06T09:32:16.907Z - success: cocos-analytics loaded
+2018-03-06T09:32:16.911Z - success: console loaded
+2018-03-06T09:32:16.914Z - success: hierarchy loaded
+2018-03-06T09:32:16.917Z - success: inspector loaded
+2018-03-06T09:32:16.919Z - success: keystore loaded
+2018-03-06T09:32:16.922Z - success: node-library loaded
+2018-03-06T09:32:16.923Z - success: package-asset loaded
+2018-03-06T09:32:16.936Z - success: preferences loaded
+2018-03-06T09:32:16.938Z - success: project-exporter loaded
+2018-03-06T09:32:16.956Z - success: project-importer loaded
+2018-03-06T09:32:16.958Z - success: project-settings loaded
+2018-03-06T09:32:16.960Z - success: ui-kit loaded
+2018-03-06T09:32:16.972Z - success: ui-grid loaded
+2018-03-06T09:32:16.975Z - success: scene loaded
+2018-03-06T09:32:16.977Z - success: sprite-editor loaded
+2018-03-06T09:32:16.980Z - success: store loaded
+2018-03-06T09:32:16.985Z - success: timeline loaded
+2018-03-06T09:32:16.985Z - normal: Loading builtin packages
+2018-03-06T09:32:16.997Z - success: asset-db-debugger loaded
+2018-03-06T09:32:16.998Z - success: code-editor loaded
+2018-03-06T09:32:16.999Z - success: color-picker loaded
+2018-03-06T09:32:17.001Z - success: package-manager loaded
+2018-03-06T09:32:17.008Z - success: sdkbox loaded
+2018-03-06T09:32:17.012Z - success: tester loaded
+2018-03-06T09:32:17.013Z - success: ui-kit-preview-extra loaded
+2018-03-06T09:32:17.015Z - success: ui-kit-preview loaded
+2018-03-06T09:32:17.016Z - success: ui-tree loaded
+2018-03-06T09:32:19.065Z - normal: Initializing project F:\CocosCreator\scratchCard-master
+2018-03-06T09:32:19.097Z - normal: Loading packages
+2018-03-06T09:32:19.107Z - normal: Watching packages
+2018-03-06T09:32:19.184Z - normal: Run Application
+2018-03-06T09:32:20.891Z - success: preview server running at http://localhost:7456
+2018-03-06T09:32:31.378Z - normal: 1.8.0
+2018-03-06T09:34:12.901Z - info: shutdown preview server

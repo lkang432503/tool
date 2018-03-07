@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>TEST</title>
+    <style>
+        canvas{
+            position: absolute;
+            left: 50%;
+            top:50%;
+            margin-left: -400px;
+            margin-top:-400px;
+        }
+    </style>
+</head>
+<body>
+    <canvas width="800" height="800"></canvas>
+    <script>
+        var canvas = document.querySelector('canvas');
+        var cvs = canvas;
+        let ctx = canvas.getContext('2d');
+        ctx.fillStyle = '#abcdef';
+        var Point = function (x, y, z) {
+            this.x = x;
+            this.y = y;
+            this.z = z;
+        }
+        function getScaleByZ(z, p) {
+            if (!p) {
+                p = 400;
+            }
+            if (z > p) {
+                scale = Infinity;
+            } else {
+                scale = p / (-z + p);
+            }
+            return scale;
+        }
+        function draw() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            let rectWidth = 5;
+            points.forEach(function (point) {
+                let scale = getScaleByZ(point.z);
+                let drawX = center.x + (point.x - center.x) * scale;
+                let drawY = center.y + (point.y - center.y) * scale;
+                let drawWidth = rectWidth * scale;
+                ctx.fillRect(drawX, drawY, drawWidth, drawWidth);
+            });
+            points = [];
+        }
+         let center = new Point(cvs.width/2,cvs.height/2,0);
+         let points = [];
+         let circlePointCount = 50;
+         let angelStep = Math.PI*2/circlePointCount;
+         let radius = 10;
+         let step = 40;
+         function update(angleOffset){
+            i = -radius;
+            while(i<radius){
+                let y = i;
+                for(let j=0;j<circlePointCount;j++){
+                    let xzRadius = Math.sqrt(radius*radius - y*y);
+                    let xzAngle = j*angelStep+angleOffset;
+                    let x = xzRadius*Math.cos(xzAngle);
+                    let z = xzRadius*Math.sin(xzAngle);
+                    points.push(
+                        new Point(
+                            x * step + cvs.width/2, 
+                            y * step + cvs.height/2, 
+                            z * step - cvs.width/2
+                        )
+                    );
+                }
+                i+= 0.5;
+            }
+            // for(let i = -radius;i<= radius;i++){
+            
+            // }
+            draw();
+         }
+         var angleOffset = 0;
+        setInterval(function(){
+            update(angleOffset);
+            angleOffset += Math.PI*2/360;
+        },18);
+
+    </script>
+</body>
+
+</html>

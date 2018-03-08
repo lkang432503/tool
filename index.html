@@ -26,7 +26,7 @@
              };
              lineWObject.normalVetor = {
                  x:-lineWObject.vector.y,
-                 y:-lineWObject.vector.x
+                 y:lineWObject.vector.x
              };
              
              lineWObject.fucLine = {
@@ -63,7 +63,7 @@
                        ball.y += yunits;
                        if(ball.x>cvs.width||ball.x<0){
                            angle = 180-angle;
-                              ball.x -= xunits;
+                           ball.x -= xunits;
                            ball.y -= yunits;
                            setAngleInfor();
                        }
@@ -97,9 +97,40 @@
                        context.strokeStyle = '#000';
                        context.strokeWidth = '50';
                        context.stroke();
+                       /*---向量点乘---*/
+                       function pDot(vectN,vectS){
+                          return vectN.x*vectS.x+vectN.y*vectS.y;
+                       }
+                       
+                       function pLength(vect){
+                          ath.sqrt(Math.pow(vect.x,2),Math.pow(vect.y,2));
+                       }
+                       /*--单位向量--*/
+                       function unitV(vect){
+                            var len = pLength(vect);
+                            return{
+                                x:vect.x/len,
+                                y:vect.y/len
+                            }
+                       }
                        if(ball.x>=lineWObject.x1&&ball.y>=lineWObject.y1&&ball.x<=lineWObject.x2&&ball.y<= lineWObject.y2){
-                           if(Math.abs((ball.x*lineWObject.fucLine.k+lineWObject.fucLine.j)-ball.y)<=10){
-                               
+                           if(Math.abs(((ball.x+xunits)*lineWObject.fucLine.k+lineWObject.fucLine.j)-(ball.y+yunits))<=10){
+                               /*-----sVect入射向量-----norVect法向量----*/
+                                var sVect = {x:xunits,y:yunits};
+                                var norVect = {x:lineWObject.normalVetor.x,y:lineWObject.normalVetor.y};
+                                var uNorVect = unitV(norVect);
+                                // var curLength = Math.sqrt(Math.pow(xunits,2),Math.pow(yunits,2));
+                                var pDotValue = pDot(sVect,norVect);
+                                
+                                if(pDotValue>0){
+                                    /*---说明夹角是0~Math.PI/2或者Math.PI*3/2~Math.PI*2---*/
+                                    
+                                }else if(pDotValue ==0){
+                                      xunits = -xunits;
+                                      yunits = -yunits;
+                                }else{
+
+                                }
                            }
                        }
                    };

@@ -1,0 +1,142 @@
+<html>
+    
+    <head>
+        <title>Canvas Tutorial</title>
+        <style>
+            canvas {
+                border: 1px solid black;
+            }
+        </style>
+    </head>
+    
+    <body>
+        <canvas id="tutorial" width="500" height="500" style="position:absolute;top:50px;left:50px;"></canvas>
+        <script>
+            /*节点*/
+         function node(){
+             if(node.currentTimes >=2){
+                 if(node.currentIndex>=configBase.nums){
+                     node.currentIndex = 0;
+                 }else{
+                     node.currentIndex++;
+                 }
+                 node.currentTimes = 1;
+             }else{
+                node.currentTimes ++;
+             }
+             this.nodeId = node.currentIndex;
+             
+         }
+          node.currentIndex = 0;
+          node.currentTimes = 0;
+          node.prototype.row = 0;
+          node.prototype.col = 0;
+            /*本配置*/
+          var configBase = {
+              nums:3,
+              row:4,
+              col:4,
+          }
+          /*数据数组*/
+          var  datas = [];
+          for(var i = 0;i<configBase.row*configBase.col;i++){
+                datas.push(new node());
+          }
+          datas.sort(function(){
+              return Math.random()-0.5;
+          });
+          for(var num = 0;num<datas.length;num++){
+              datas[num].row= Math.floor(num/configBase.row);
+              datas[num].col = Math.floor(num%configBase.col);
+          }
+          console.log(datas);
+          /*判断两个点是否可以消除*/
+        function judgeEliminate(nodeA,nodeB){
+            /*对折次数*/
+                var fold = 0;
+                var lineContent = isLine(nodeA,nodeB);
+                if(lineContent.isLine&&lineContent.list){
+                    alert('可以消除');
+                    return;
+                }
+                // if(lineContent.isLine){
+
+                // }else if(){
+
+                // }
+        }
+        /*是否连接是一条直线*/
+        function isLine(nodeA,nodeB){
+            var curData = [];
+            var isLines = true;
+             if(nodeA.row==nodeB.row||nodeA.col==nodeB.col){
+                  if(nodeA.row == nodeB.row){
+                       if(nodeA.col<nodeB.col){
+                        curData   =  getLineDatas({
+                               isRow:true,
+                               minCol:nodeA.col+1,
+                               maxCol:nodeB.col
+                           });
+                       }else{
+                        curData= getLineDatas({
+                               isRow:true,
+                               minCol:nodeB.col+1,
+                               maxCol:nodeA.col
+                           });
+                       }
+                  }else{
+                      if(nodeA.row<nodeB.row){
+                        curData= getLineDatas({
+                               isCol:true,
+                               minRow:nodeA.row+1,
+                               maxRow:nodeB.row
+                           });
+                      }else{
+                        curData = getLineDatas({
+                                isCol:true,
+                                minRow:nodeB.row+1,
+                                maxRow:nodeA.row
+                            });
+                      }
+                  }
+             }else{
+                 isLines = false;
+             }
+             return {
+                 isLine:isLines,
+                 list:curData
+             }
+        }
+        /*判断横列上的数组*/
+        function getLineDatas(params){
+           var _data = [];
+            /*是否是同行*/
+           if(params.isRow){
+                var minIndex = (params.minCol)+params.row*configBase.row;
+                var maxIndex = (params.maxCol)+params.row*configBase.row;
+                _data = datas.slice(minIndex,maxIndex);
+                
+           }else{
+                for(var i = params.minRow;i<params.maxRow;i++){
+                   var index =  i*configBase.row+params.col;
+                   _data.push(index);
+                }
+           }
+           /*判断这些数组是否是空为空可以取消*/
+           var isTrue = _data.some(function(item){
+                 if(item){
+                     return true;
+                 }else{
+                     return false;
+                 }
+            });
+            if(isTrue){
+                return false;
+            }else{
+                return _data;
+            }
+        }
+        </script>
+        </body>
+        </html>
+  

@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>css3 2dmatrix</title>
+    <style>
+        .matrix_box{
+            width: 150px;
+            height: 150px;
+            background-color: #a0b3d6;
+            transform-origin: 50% 50%;
+            transition:all 2s;
+            margin: 50px 150px;
+        }
+        .test{
+            width: 160px;
+            height: 20px;
+        }
+        .inp-content-box{
+          position: absolute;
+          bottom: 250px;
+          left: 50px;
+        }
+    </style>
+</head>
+<body>
+    <div class="matrix_box" id="matrixBox2">
+    </div>
+    <div class="inp-content-box">
+            <input type="num" class="test" id="test1" placeholder="填入移动值(x,y)">
+            <input type="num" class="test"  id="test2" placeholder="填入旋转值">
+            <input type="num" class="test"  id="test3"  placeholder="填入倾斜值(skewx,skewy)">
+            <input type="num" class="test"  id="test4"  placeholder="收缩值(scalex,scaley)">
+            <button type="button" id="matrixButton2">点击应用matrix</button>
+    </div>
+  
+    <script>
+          function angleToRadian(angle){
+                 return Math.PI/180*angle;
+             }
+         function setmatrix(mx,my,sx,sy,skewx,skewy,rotateAngle){
+                
+                var skewx = angleToRadian(skewx);
+                var skewy = angleToRadian(skewy);
+                var rotateAngle = angleToRadian(rotateAngle);
+                var consAngleValue = Math.cos(rotateAngle);
+                var sinAngleValue = Math.sin(rotateAngle);
+                return [sx*consAngleValue,sinAngleValue*Math.tan(skewy),-sinAngleValue*Math.tan(skewx),consAngleValue*sy,mx,my];
+            }
+            var $ = function(selector) {
+                    return document.querySelector(selector);
+                };
+        (function() {
+              
+                var $css3Transform = function(element, value) {
+                    var arrPriex = ["O", "Ms", "Moz", "Webkit", ""], length = arrPriex.length;
+                    for (var i=0; i < length; i+=1) {
+                        element.style[arrPriex[i] + "Transform"] = value;
+                    }
+                };
+
+                if ($ && window.addEventListener) {
+                    $("#matrixButton2").addEventListener("click", function() {
+                        var moveValue = $('#test1').value?$('#test1').value:'0';
+                       var  moveArr = moveValue.split(',');
+                         if(!moveArr[1]){
+                            moveArr[1] = '0';
+                         }
+                       var   angle = $('#test2').value? $('#test2').value:'0';
+
+                       var   skewArr = ($('#test3').value? $('#test3').value:'0').split(',');
+                       if(!skewArr[1]){
+                        skewArr[1] = '0';
+                       }
+                       var scaleArr =  ($('#test4').value? $('#test4').value:'0').split(',');
+                        if(!scaleArr[1]){
+                            scaleArr[1] = '0';
+                        }
+                       var testMatrix = new matrix();
+                       if(moveArr[0]>0){
+                        testMatrix.moveMatrix(moveArr[0],moveArr[1]);
+                       }
+                       if(angle>0){
+                         testMatrix.rotateAngle(angle);
+                       }
+                       if(skewArr[0]>0){
+                         testMatrix.skew(skewArr[0],skewArr[1]);
+                       }
+                       if(scaleArr[0]>0){
+                            testMatrix.scaleMatrix(scaleArr[0],scaleArr[1]);  
+                       }
+                        $css3Transform($("#matrixBox2"),testMatrix.getResult());
+                    });
+                } else {
+                    alert("目前浏览器不支持CSS3 transform, 请试试其他浏览器");
+                }
+            
+        })();
+        function moveMatrix(moveX,moveY){
+                return [[1,0,moveX],[0,1,moveY],[0,0,1]];
+        }
+        function scaleMatrix(scaleX,scaleY){
+            return [[scaleX,0,0],[0,scaleY,0],[0,0,1]];
+        }
+        function rotateAngle(angle){
+            var radian = angleToRadian(angle);
+            return [
+                [Math.cos(radian),-Math.sin(radian),0],
+                [Math.sin(radian),Math.cos(radian),0],
+                [0,0,1]
+            ];
+        }
+        function skew(skewX,skewY){
+            var skewRadianX = angleToRadian(skewX);
+            var skewRadianY = angleToRadian(skewY);
+            var tanX = Math.tan(skewRadianX);
+            var tanY = Math.tan(skewRadianY);
+            return [
+                [1,tanX,0],
+                [tanY,1,0],
+                [0,0,1]
+            ]
+        };
+             /*计算矩阵*/
+            function calculateMatrix(matrixA,matrixB){
+                var resultMatrix = [];
+                for(var i = 0;i<matrixA.length;i++){
+                    var matrixA_row = matrixA[i];
+                    var result_row = [];
+                    resultMatrix.push(result_row);
+                    for(var col = 0;col<matrixA.length;col++){
+                        var itemValue = 0;
+                        for(var j = 0;j<matrixA_row.length;j++){
+                            var matriAItem = matrixA_row[j];
+                            itemValue+= matriAItem*matrixB[j][col];
+                         }
+                         result_row.push(itemValue);
+                    }
+                }
+                return resultMatrix;
+            }
+            /*
+             *用矩阵实现旋转，缩放，移动，倾斜，
+             *@example  new matrix().moveMatrix(10,50).scaleMatrix(1.2,1).rotateAngle(70).getResult();
+             */
+            function matrix(){
+                this._matrix = [
+                    [1,0,0],
+                    [0,1,0],
+                    [0,0,1]
+                ]
+            }
+            matrix.prototype.moveMatrix= function(moveX,moveY){
+               this._matrix =calculateMatrix(moveMatrix(moveX,moveY),this._matrix);
+               return this;
+            }
+            matrix.prototype.scaleMatrix = function(scaleX,scaleY){
+                    if(typeof(scaleY) =='undefined'){
+                        scaleY = scaleX;
+                    }
+                  this._matrix=calculateMatrix(scaleMatrix(scaleX,scaleY),this._matrix);
+                  return this;
+            }
+            matrix.prototype.rotateAngle = function(angle){
+                this._matrix=calculateMatrix(rotateAngle(angle),this._matrix);
+                return this;
+            }
+            matrix.prototype.skew = function(skewX,skewY){
+                this._matrix=calculateMatrix(skew(skewX,skewY),this._matrix);
+                return this;
+            }
+            matrix.prototype.getResult = function(){
+                var resultArrValues = [];
+                var _resultArr = this._matrix.slice(0,-1);
+                var _colLength = _resultArr[0].length;
+                for(var j = 0;j<_colLength;j++){
+                    for(var i = 0;i<_resultArr.length;i++){
+                        resultArrValues.push(_resultArr[i][j]);
+                    }
+                }
+                this._css3MatrixValue = this._matrix.slice(0,-1)
+                return 'matrix('+resultArrValues.join(',')+')';
+            }
+            
+    </script>
+</body>
+</html>

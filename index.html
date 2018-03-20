@@ -1,142 +1,41 @@
-<html>
-    
-    <head>
-        <title>Canvas Tutorial</title>
-        <style>
-            canvas {
-                border: 1px solid black;
-            }
-        </style>
-    </head>
-    
-    <body>
-        <canvas id="tutorial" width="500" height="500" style="position:absolute;top:50px;left:50px;"></canvas>
-        <script>
-             var cvs = document.getElementById('tutorial');
-             var context = cvs.getContext('2d');
-             var lineWObject = {
-                 x1:20,
-                 y1:30,
-                 x2:500,
-                 y2:500
-             };
-             lineWObject.vector = {
-                 x:lineWObject.x2-lineWObject.x1,
-                 y:lineWObject.y2-lineWObject.y1
-             };
-             lineWObject.normalVetor = {
-                 x:-lineWObject.vector.y,
-                 y:lineWObject.vector.x
-             };
-             
-             lineWObject.fucLine = {
-                   k:(lineWObject.y2-lineWObject.y1)/(lineWObject.x2-lineWObject.x1),
-                   j:(lineWObject.x2*lineWObject.y1-lineWObject.x1*lineWObject.y2)/(lineWObject.x2-lineWObject.x1)
-             };
-             window.addEventListener('load',function(){
-                   var speed = 5;
-                   var p1 = {x:20,y:20};
-                   var angle = 20;
-                   var radians,xunits,yunits;
-                   function setAngleInfor(){
-                        radians = angle*Math.PI/180;
-                        xunits = Math.cos(radians)*speed;
-                        yunits = Math.sin(radians)*speed;
-                   };
-                   setAngleInfor();
-                   var ball = {
-                       x:p1.x,
-                       y:p1.y,
-                   };
-                   var points = new Array();
-                   function gameLoop(){
-                       window.setTimeout(gameLoop,20);
-                       drawScreen();
-                   };
-                   gameLoop();
-                   function drawScreen(){
-                       context.fillStyle = '#EEEEEE';
-                       context.fillRect(0,0,cvs.width,cvs.height);
-                       context.strokeStyle="#000000";
-                       context.strokeRect(1,1,cvs.width-2,cvs.height-2);
-                       ball.x += xunits;
-                       ball.y += yunits;
-                       if(ball.x>cvs.width||ball.x<0){
-                           angle = 180-angle;
-                           ball.x -= xunits;
-                           ball.y -= yunits;
-                           setAngleInfor();
-                       }
-                       if(ball.y<0||ball.y>cvs.height){
-                           angle = 360-angle;
-                               ball.x -= xunits;
-                           ball.y -= yunits;
-                           setAngleInfor();
-                       }
-                       points.push({
-                           x:ball.x,
-                           y:ball.y
-                       });
-                       context.fillStyle="#000000";
-                       if(points.length>100){
-                           points.shift();
-                       }
-                       for(var i = 0;i<points.length;i++){
-                            context.beginPath();
-                            context.arc(points[i].x,points[i].y,1,0,Math.PI*2,false);
-                            context.closePath();
-                            context.fill();
-                       }
-                       context.beginPath();
-                       context.arc(ball.x,ball.y,15,0,Math.PI*2,true);
-                       context.closePath();
-                       context.fill();
-                       context.beginPath();
-                       context.moveTo(lineWObject.x1,lineWObject.y1);
-                       context.lineTo(lineWObject.x2,lineWObject.y2);
-                       context.strokeStyle = '#000';
-                       context.strokeWidth = '50';
-                       context.stroke();
-                       /*---向量点乘---*/
-                       function pDot(vectN,vectS){
-                          return vectN.x*vectS.x+vectN.y*vectS.y;
-                       }
-                       
-                       function pLength(vect){
-                          ath.sqrt(Math.pow(vect.x,2),Math.pow(vect.y,2));
-                       }
-                       /*--单位向量--*/
-                       function unitV(vect){
-                            var len = pLength(vect);
-                            return{
-                                x:vect.x/len,
-                                y:vect.y/len
-                            }
-                       }
-                       if(ball.x>=lineWObject.x1&&ball.y>=lineWObject.y1&&ball.x<=lineWObject.x2&&ball.y<= lineWObject.y2){
-                           if(Math.abs(((ball.x+xunits)*lineWObject.fucLine.k+lineWObject.fucLine.j)-(ball.y+yunits))<=10){
-                               /*-----sVect入射向量-----norVect法向量----*/
-                                var sVect = {x:xunits,y:yunits};
-                                var norVect = {x:lineWObject.normalVetor.x,y:lineWObject.normalVetor.y};
-                                var uNorVect = unitV(norVect);
-                                // var curLength = Math.sqrt(Math.pow(xunits,2),Math.pow(yunits,2));
-                                var pDotValue = pDot(sVect,norVect);
-                                
-                                if(pDotValue>0){
-                                    /*---说明夹角是0~Math.PI/2或者Math.PI*3/2~Math.PI*2---*/
-                                    
-                                }else if(pDotValue ==0){
-                                      xunits = -xunits;
-                                      yunits = -yunits;
-                                }else{
-
-                                }
-                           }
-                       }
-                   };
-                
-             },false);
-        </script>
-        </body>
-        </html>
-  
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="Generator" content="EditPlus?">
+    <meta name="Author" content="">
+    <meta name="Keywords" content="">
+    <meta name="Description" content="">
+    <title>练习</title>
+    <style>
+        #myCanvas {
+            background-color:#00ffff
+        }
+    </style>
+</head>
+<body>
+<canvas id="myCanvas" width="1072" height="200">您的浏览器不支持canvas！</canvas>
+<script type="text/javascript">
+    var canvas=document.getElementById('myCanvas');
+    var context = canvas.getContext('2d');
+    // 设置文字阴影的颜色为黑色，透明度为20%
+    context.shadowColor = 'rgba(0, 0, 0, 0.8)';
+    // 将阴影向右移动15px，向上移动10px
+    context.shadowOffsetX = 0;
+    context.shadowOffsetY = 0;
+    // 轻微模糊阴影
+    context.shadowBlur = 50;
+    // 字号为60px，字体为impact
+    context.font = "100px 楷体";
+    // 将文本填充为棕色
+    context.fillStyle = '#ffffff';
+    // 将文本设为居中对齐
+    context.textAlign = 'center';
+    context.textBaseline='middle';
+    // 在canvas顶部中央的位置，以大字体的形式显示文本
+    context.fillText('测试内容....', 536, 100);
+    context.restore();
+</script>
+</body>
+</script>
+</html>

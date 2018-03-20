@@ -1,0 +1,114 @@
+<html>
+    
+    <head>
+        <title>Canvas Tutorial</title>
+        <style>
+            canvas {
+                border: 1px solid black;
+            }
+        </style>
+    </head>
+    
+    <body>
+        <canvas id="tutorial" width="500" height="500" style="position:absolute;top:50px;left:50px;"></canvas>
+        <script>
+             var cvs = document.getElementById('tutorial');
+             var context = cvs.getContext('2d');
+             var lineWObject = {
+                 x1:20,
+                 y1:30,
+                 x2:500,
+                 y2:500
+             };
+             lineWObject.vector = {
+                 x:lineWObject.x2-lineWObject.x1,
+                 y:lineWObject.y2-lineWObject.y1
+             };
+             lineWObject.normalVetor = {
+                 x:-lineWObject.vector.y,
+                 y:lineWObject.vector.x
+             };
+             
+             lineWObject.fucLine = {
+                   k:(lineWObject.y2-lineWObject.y1)/(lineWObject.x2-lineWObject.x1),
+                   j:(lineWObject.x2*lineWObject.y1-lineWObject.x1*lineWObject.y2)/(lineWObject.x2-lineWObject.x1)
+             };
+               /*---向量点乘---*/
+               function pDot(vectN,vectS){
+                          return vectN.x*vectS.x+vectN.y*vectS.y;
+                       }
+                       
+                function pLength(vect){
+                    return Math.sqrt(Math.pow(vect.x,2),Math.pow(vect.y,2));
+                }
+                /*--单位向量--*/
+                function unitV(vect){
+                    var len = pLength(vect);
+                    return{
+                        x:vect.x/len,
+                        y:vect.y/len
+                    }
+                }
+                /*---向量scale---*/
+                function vectScale(vec,scale){
+                    return {
+                        x:vec.x*scale,
+                        y:vec.y*scale
+                    }
+                }
+                /*---向量加减---*/
+                function vectorAddOrSub(pointA,pointB,isAdd){
+                     if(isAdd){
+                         return {
+                             x:pointA.x+pointB.x,
+                             y:pointA.y+pointB.y
+                         }
+                     }else{
+                         return {
+                             x:pointA.x-pointB.x,
+                             y:pointA.y - pointB.y
+                         }
+                     }
+                }
+                /*点在向量上的投影向量*/
+                function pointProjectVec(V_AB,V_AC){
+                    var V_AB = vectorAddOrSub(VB,VA);
+                    var V_AC = vectorAddOrSub(point,VA);
+                    var V_ABUnitV = unitV(V_AB);
+                   return vectScale(V_ABUnitV,pDot(V_AC,V_ABUnitV));
+                }
+                /*点到线段的最短距离*/
+                function pointLineSegment(point,VA,VB){
+                    /*--ab向量---*/
+                    var V_AB = vectorAddOrSub(VB,VA);
+                    var V_AC = vectorAddOrSub(point,VA);
+                    var V_ABLength = pLength(V_AB);
+                    /*向量点乘大于0*/
+                    var pointMul = pDot(V_AB,V_AC)/V_ABLength;
+                    /*目标点与ab向量的夹角大于0并且在ac向量在ab向量的投影长不能大于ab向量的长度*/
+                    if(pointMul>=0&&pointMul<=V_ABLength){
+                           var projectAB = pointProjectVec(V_AB,V_AC);   
+                           return pLength(vectorAddOrSub(V_AC,projectAB));
+                    }else if(pointMul<0){
+                        /*ab向量与ac向量的夹角为超过90度*/
+                       return pLength(V_AC);
+                    }else if(pointMul>V_ABLength){
+                        /*在ac向量在ab向量的投影长大于ab向量的长度*/
+                          return pLength(vectorAddOrSub(point,VB));
+                    }
+                }
+                /*点围绕线段旋转180后的点*/
+                function pointLine180(point,VA,VB){
+                    /*--ab向量---*/
+                    var V_AB = vectorAddOrSub(VB,VA);
+                    var V_AC = vectorAddOrSub(point,VA);
+                    var projectAB = pointProjectVec(V_AB,V_AC);
+                    /*投影点*/
+                    var projectpPointAB = vectorAddOrSub(VA,projectAB,true);
+                   return vectorAddOrSub(projectpPointAB,vectScale(vectorAddOrSub(point,projectpPointAB),-1),true);
+                }
+             window.addEventListener('load',function(){},false);
+        </script>
+        </body>
+        </html>
+  
